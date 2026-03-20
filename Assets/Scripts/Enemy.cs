@@ -14,7 +14,7 @@ public class Enemy : MonoBehaviour
         re = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         enemycolour = Random.Range(0, 5);
-        Setenemycolour();
+       
     }
 
     void Update()
@@ -28,34 +28,5 @@ public class Enemy : MonoBehaviour
         {
             direction *= -1;
         }
-    }
-
-    
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag("Bullet"))
-        {
-            Bullet bulletScript = other.GetComponent<Bullet>();
-
-            if (bulletScript != null)
-            {
-                if (bulletScript.bulletcolor == enemycolour)
-                {
-                    Destroy(other.gameObject); 
-                    Destroy(gameObject);     
-                }
-                else
-                {
-                    Destroy(other.gameObject);   
-                }
-            }
-        }
-    }
-    void Setenemycolour()
-    {
-        if (enemycolour == 0) sr.color = Color.red;
-        if (enemycolour == 1) sr.color = Color.green;
-        if (enemycolour == 2) sr.color = Color.blue;
-        if (enemycolour == 3) sr.color = Color.yellow;
     }
 }

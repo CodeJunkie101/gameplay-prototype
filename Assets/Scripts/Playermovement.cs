@@ -1,162 +1,139 @@
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class Playermovement : MonoBehaviour
 {
-    #region variabledeclaration
+    public Animator anim;
     public float speedofmovement = 5f;
-    private float facingdirection = 1f;
-    public int Gulaal=0;
     public float bounceforce = 5f;
     public float dashforce = 20f;
     public float dashtime = 0.2f;
     public float dashcooldown = 1f;
-    private bool isdashing = false;
-    private Animator animator;
-    private float dashtimer;
-    private float cooldownofdashtimer;
     public float forceofjump = 10f;
+    public int maxjumps = 2;
+   
+    public Transform firepoint;
+   
+    public int Gulaal = 0;
+    public TrailRenderer trail;
+
     private Rigidbody2D r;
+    private SpriteRenderer sr;
     private bool isgrounded;
     private int jumpcount = 0;
-    public int maxjumps = 2;
-    private SpriteRenderer sr;
+    private bool isdashing = false;
+    private float dashtimer;
+    private float cooldownofdashtimer;
     private bool hasdashedinair = false;
-    public GameObject bulletprefab;
-    public Transform firepoint;
-    public int colourofbullet = 0;
-    #endregion variabledeclaration
+    private float move;
+    private int forward = 1;
+    private bool isDead = false;
 
-    int forward;
     void Start()
     {
         r = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
-        
+        if (trail != null) trail.emitting = false;
     }
 
     void Update()
     {
+        if (isDead) return;
 
-    float move = Input.GetAxis("Horizontal");
-   
-    
-    if (move > 0)
-    {
-       
-        forward = 1; 
-    }
-    else if (move < 0)
-    {
-        
-        forward = -1;
-    }
+        move = Input.GetAxis("Horizontal");
 
-    #region DASHLOGIC_and_movement
-    if (cooldownofdashtimer > 0) cooldownofdashtimer -= Time.deltaTime;
-    if (isdashing)
-    {
-        dashtimer -= Time.deltaTime;
-
-        if (dashtimer <= 0)
+        if (move > 0)
         {
-            isdashing = false;
-            r.gravityScale = 3; 
+            sr.flipX = false;
+            forward = 1;
         }
-        return; 
-    }
-    
-    r.linearVelocity = new Vector2(move * speedofmovement, r.linearVelocity.y);
-    #region JumpandDoublejump
-    if (Input.GetKeyDown(KeyCode.Space) && jumpcount < maxjumps)
-    {
-        r.linearVelocity = new Vector2(r.linearVelocity.x, forceofjump);
-        jumpcount++;
-    }
-    if (Input.GetKeyDown(KeyCode.LeftShift) && cooldownofdashtimer <= 0)
-    {
-        if (!isgrounded && hasdashedinair) return;
+        else if (move < 0)
+        {
+            sr.flipX = true;
+            forward = -1;
+        }
 
-        isdashing = true;
-        dashtimer = dashtime;
-        cooldownofdashtimer = dashcooldown;
+        HandleAnimations();
 
-        r.gravityScale = 0;
-        #endregion JumpandDoublejump
-        if (!isgrounded) hasdashedinair = true;
+        if (cooldownofdashtimer > 0)
+            cooldownofdashtimer -= Time.deltaTime;
 
-        r.linearVelocity = new Vector2(forward * dashforce, 0);
-        #endregion DASHLOGIC_and_movement
-    }
-    #region Bullet_creation_and direction logic of bullet and colour of bullet
-    if(Input.GetKeyDown(KeyCode.Z))
-    {
-        GameObject Bullet = Instantiate(bulletprefab , firepoint.position , Quaternion.identity);
-        Bullet bulletScript = Bullet.GetComponent<Bullet>();
-        bulletScript.bulletcolor = colourofbullet;  
-        Bullet.GetComponent<Rigidbody2D>().linearVelocity =  new Vector2(forward * 10f, 0);
+        if (isdashing)
+        {
+            dashtimer -= Time.deltaTime;
+            if (dashtimer <= 0)
+            {
+                isdashing = false;
+                r.gravityScale = 3;
+                if (trail != null) trail.emitting = false;
+            }
+            return;
+        }
 
-        SpriteRenderer sr = Bullet.GetComponent<SpriteRenderer>();
+        r.linearVelocity = new Vector2(move * speedofmovement, r.linearVelocity.y);
 
-        if (colourofbullet == 0) sr.color = Color.red;
-        if (colourofbullet == 1) sr.color = Color.green;
-        if (colourofbullet == 2) sr.color = Color.blue;
-        if (colourofbullet == 3) sr.color = Color.yellow;
+        if (Input.GetKeyDown(KeyCode.Space) && jumpcount < maxjumps)
+        {
+            r.linearVelocity = new Vector2(r.linearVelocity.x, forceofjump);
+            jumpcount++;
+        }
 
-        Destroy(Bullet, 2f);
+        if (Input.GetKeyDown(KeyCode.LeftShift) && cooldownofdashtimer <= 0)
+        {
+            if (!isgrounded && hasdashedinair) return;
+
+            isdashing = true;
+            dashtimer = dashtime;
+            cooldownofdashtimer = dashcooldown;
+            r.gravityScale = 0;
+
+            if (!isgrounded) hasdashedinair = true;
+
+            r.linearVelocity = new Vector2(forward * dashforce, 0);
+
+            if (trail != null) trail.emitting = true;
+
+            anim.SetTrigger("dash");
+        }
+
+      
+
+           
+
             
-    }
-    
-    if (Input.GetKeyDown(KeyCode.Alpha1))
-{
-    colourofbullet = 0;
-}
 
-if (Input.GetKeyDown(KeyCode.Alpha2))
-{
-    colourofbullet = 1;
-}
-
-if (Input.GetKeyDown(KeyCode.Alpha3))
-{
-    colourofbullet = 2;
-}
-
-if (Input.GetKeyDown(KeyCode.Alpha4))
-{
-    colourofbullet = 3;
-}
-
-if(Gulaal == 10)
-        {
-            Time.timeScale = 0f; 
-        }
+            
+        
 
         
-#endregion Bullet_creation_and direction logic of bullet and colour of bullet
+    }
 
-}
+    void HandleAnimations()
+    {
+        anim.SetBool("jump", r.linearVelocity.y > .1f);
+        anim.SetBool("tground", isgrounded);
+        anim.SetFloat("yVel", r.linearVelocity.y);
+        anim.SetBool("idle", Mathf.Abs(move) < .1f && isgrounded);
+        anim.SetBool("run", Mathf.Abs(move) > .1f && isgrounded);
+    }
 
-    #region Allcollisions
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.CompareTag("Ground"))
+        if (collision.gameObject.CompareTag("Ground"))
         {
-            
             isgrounded = true;
             hasdashedinair = false;
             jumpcount = 0;
         }
-        if (collision.gameObject.CompareTag("Enemy"))
-    {
-        Time.timeScale = 0f; 
-        Debug.Log("Game Over");
-    }
+
+        if (collision.gameObject.CompareTag("Enemy") && !isDead)
+        {
+            Die();
+        }
     }
 
     void OnCollisionExit2D(Collision2D collision)
     {
-        if(collision.gameObject.CompareTag("Ground"))
+        if (collision.gameObject.CompareTag("Ground"))
         {
             isgrounded = false;
         }
@@ -164,16 +141,32 @@ if(Gulaal == 10)
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.CompareTag("Bouncepad"))
+        if (other.CompareTag("Bouncepad"))
         {
-            r.linearVelocity = new Vector2(r.linearVelocity.x,0);
-            r.linearVelocity = new Vector2(r.linearVelocity.x  , bounceforce);
+            r.linearVelocity = new Vector2(r.linearVelocity.x, bounceforce);
             jumpcount = 1;
             hasdashedinair = false;
         }
     }
-    
-   
-    #endregion Allcollisions
 
+    void Die()
+{
+    isDead = true;
+
+    r.linearVelocity = Vector2.zero;
+    r.angularVelocity = 0f;
+
+    r.gravityScale = 0;
+
+    r.constraints = RigidbodyConstraints2D.FreezeAll;
+
+    anim.Play("death");
+
+    Invoke(nameof(StopGame), 1.2f);
+}
+
+    void StopGame()
+    {
+        Time.timeScale = 0f;
+    }
 }
