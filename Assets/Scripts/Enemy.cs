@@ -1,32 +1,82 @@
 using UnityEngine;
+using System.Collections;
 
-public class Enemy : MonoBehaviour
+public class enemy : MonoBehaviour
 {
-    public float enemyspeed = 2f;
-    private Rigidbody2D re;
-    private int direction = 1;
-    public int enemycolour = 0;
+    public float speed = 2f;
+    public int health = 50;
 
-    private SpriteRenderer sr;
+    private Rigidbody2D body;
+    private SpriteRenderer sprite;
+
+    private int direction = 1;
 
     void Start()
     {
-        re = GetComponent<Rigidbody2D>();
-        sr = GetComponent<SpriteRenderer>();
-        enemycolour = Random.Range(0, 5);
-       
+        body = GetComponent<Rigidbody2D>();
+        sprite = GetComponent<SpriteRenderer>();
     }
 
     void Update()
     {
-        re.linearVelocity = new Vector2(direction * enemyspeed, re.linearVelocity.y);
+        // move left and right
+        body.linearVelocity = new Vector2(direction * speed, body.linearVelocity.y);
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    void OnCollisionEnter2D(Collision2D col)
     {
-        if (collision.gameObject.CompareTag("Wall"))
+        if (col.gameObject.CompareTag("Wall"))
         {
-            direction *= -1;
+            direction = direction * -1;
         }
+    }
+
+    // called when player punches
+    public void takedamage(int damage)
+    {
+        health = health - damage;
+
+        // flash effect
+        StartCoroutine(flash());
+
+        // simple push back
+        if (colleft())
+        {
+            body.linearVelocity = new Vector2(5f, body.linearVelocity.y);
+        }
+        else
+        {
+            body.linearVelocity = new Vector2(-5f, body.linearVelocity.y);
+        }
+
+        if (health <= 0)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    // small flash effect
+    IEnumerator flash()
+    {
+        sprite.color = Color.white;
+        yield return new WaitForSeconds(0.05f);
+
+        sprite.color = Color.red;
+        yield return new WaitForSeconds(0.05f);
+
+        sprite.color = Color.white;
+    }
+
+    // simple check (player side)
+    bool colleft()
+    {
+        GameObject p = GameObject.FindWithTag("Player");
+
+        if (p == null) return false;
+
+        if (p.transform.position.x < transform.position.x)
+            return true;
+        else
+            return false;
     }
 }

@@ -10,14 +10,18 @@ public class Playermovement : MonoBehaviour
     public float dashcooldown = 1f;
     public float forceofjump = 10f;
     public int maxjumps = 2;
-   
+
     public Transform firepoint;
-   
     public int Gulaal = 0;
     public TrailRenderer trail;
 
+    public Transform punchpoint;
+    public float punchrange = 0.7f;
+    public LayerMask enemylayer;
+
     private Rigidbody2D r;
     private SpriteRenderer sr;
+
     private bool isgrounded;
     private int jumpcount = 0;
     private bool isdashing = false;
@@ -32,12 +36,18 @@ public class Playermovement : MonoBehaviour
     {
         r = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
+
         if (trail != null) trail.emitting = false;
     }
 
     void Update()
     {
         if (isDead) return;
+
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            anim.SetTrigger("Punch");
+        }
 
         move = Input.GetAxis("Horizontal");
 
@@ -94,17 +104,32 @@ public class Playermovement : MonoBehaviour
 
             anim.SetTrigger("dash");
         }
+    }
 
-      
+    public void punch()
+    {
+        Collider2D[] hits = Physics2D.OverlapCircleAll(
+            punchpoint.position,
+            punchrange,
+            enemylayer
+        );
+
+        foreach (Collider2D enemy in hits)
+        {
+            Debug.Log("Hit " + enemy.name);
 
            
 
             
+        }
+    }
 
-            
-        
+    void OnDrawGizmosSelected()
+    {
+        if (punchpoint == null) return;
 
-        
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(punchpoint.position, punchrange);
     }
 
     void HandleAnimations()
@@ -150,20 +175,18 @@ public class Playermovement : MonoBehaviour
     }
 
     void Die()
-{
-    isDead = true;
+    {
+        isDead = true;
 
-    r.linearVelocity = Vector2.zero;
-    r.angularVelocity = 0f;
+        r.linearVelocity = Vector2.zero;
+        r.angularVelocity = 0f;
+        r.gravityScale = 0;
+        r.constraints = RigidbodyConstraints2D.FreezeAll;
 
-    r.gravityScale = 0;
+        anim.Play("death");
 
-    r.constraints = RigidbodyConstraints2D.FreezeAll;
-
-    anim.Play("death");
-
-    Invoke(nameof(StopGame), 1.2f);
-}
+        Invoke(nameof(StopGame), 1.2f);
+    }
 
     void StopGame()
     {

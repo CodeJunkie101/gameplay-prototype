@@ -151,8 +151,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffff973587f9d8847a8e8ed6dba83f07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  enemyspeed: 4
-  enemycolour: 0
+  speed: 2
+  health: 50
 --- !u!61 &66311338
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -780,8 +780,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffff973587f9d8847a8e8ed6dba83f07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  enemyspeed: 4
-  enemycolour: 0
+  speed: 2
+  health: 50
 --- !u!61 &512356908
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1111,6 +1111,37 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   CustomBlends: {fileID: 0}
+--- !u!1 &527018212
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 527018213}
+  m_Layer: 8
+  m_Name: punchpoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &527018213
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 527018212}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.1193, y: 0.206, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1909213720}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &592241987
 GameObject:
   m_ObjectHideFlags: 0
@@ -1364,8 +1395,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffff973587f9d8847a8e8ed6dba83f07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  enemyspeed: 4
-  enemycolour: 0
+  speed: 2
+  health: 50
 --- !u!61 &657018279
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1622,8 +1653,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffff973587f9d8847a8e8ed6dba83f07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  enemyspeed: 4
-  enemycolour: 0
+  speed: 2
+  health: 50
 --- !u!61 &826374527
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2356,37 +2387,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1352509659
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1352509660}
-  m_Layer: 8
-  m_Name: firepoint
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1352509660
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1352509659}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.103, y: 0.208, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1909213720}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1448643250
 GameObject:
   m_ObjectHideFlags: 0
@@ -2419,8 +2419,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffff973587f9d8847a8e8ed6dba83f07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  enemyspeed: 4
-  enemycolour: 0
+  speed: 2
+  health: 50
 --- !u!61 &1448643252
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2599,8 +2599,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffff973587f9d8847a8e8ed6dba83f07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  enemyspeed: 4
-  enemycolour: 0
+  speed: 2
+  health: 50
 --- !u!61 &1481026589
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3042,8 +3042,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffff973587f9d8847a8e8ed6dba83f07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  enemyspeed: 4
-  enemycolour: 0
+  speed: 2
+  health: 50
 --- !u!61 &1759060921
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3465,8 +3465,8 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0}
-    oldSize: {x: 0.22, y: 0.31}
-    newSize: {x: 1, y: 1}
+    oldSize: {x: 0.17, y: 0.29}
+    newSize: {x: 0.17, y: 0.29}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -3547,12 +3547,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 6
-  m_Sprite: {fileID: 2237285443321258136, guid: 6507e1ee839c7f44c8c4757216e0900e, type: 3}
+  m_Sprite: {fileID: 8554386224155236166, guid: 4958dcd3f6a59ac469ffd56e9fe9532e, type: 3}
   m_Color: {r: 0, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.17, y: 0.29}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -3571,7 +3571,7 @@ Transform:
   m_LocalScale: {x: 2.6165, y: 2.9705, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1352509660}
+  - {fileID: 527018213}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1909213721
@@ -3594,9 +3594,14 @@ MonoBehaviour:
   dashcooldown: 1
   forceofjump: 8.5
   maxjumps: 2
-  firepoint: {fileID: 1352509660}
+  firepoint: {fileID: 0}
   Gulaal: 0
   trail: {fileID: 1909213723}
+  punchpoint: {fileID: 527018213}
+  punchrange: 0.5
+  enemylayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!95 &1909213722
 Animator:
   serializedVersion: 7
