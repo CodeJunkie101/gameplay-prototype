@@ -11,6 +11,7 @@ TagManager:
   - Barrier
   - Bullet
   - Gulaal
+  - Spikes
   layers:
   - Default
   - TransparentFX

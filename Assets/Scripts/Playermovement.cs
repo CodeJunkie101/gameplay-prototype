@@ -10,6 +10,7 @@ public class Playermovement : MonoBehaviour
     public float dashcooldown = 1f;
     public float forceofjump = 10f;
     public int maxjumps = 2;
+    public int punchdamage = 1;
 
     public Transform firepoint;
     public int Gulaal = 0;
@@ -45,9 +46,10 @@ public class Playermovement : MonoBehaviour
         if (isDead) return;
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            anim.SetTrigger("Punch");
-        }
+{
+    anim.SetTrigger("Punch");
+    punch(); 
+}
 
         move = Input.GetAxis("Horizontal");
 
@@ -106,23 +108,25 @@ public class Playermovement : MonoBehaviour
         }
     }
 
-    public void punch()
+   public void punch()
+{
+    Collider2D[] hits = Physics2D.OverlapCircleAll(
+        punchpoint.position,
+        punchrange,
+        enemylayer
+    );
+
+    foreach (Collider2D enemy in hits)
     {
-        Collider2D[] hits = Physics2D.OverlapCircleAll(
-            punchpoint.position,
-            punchrange,
-            enemylayer
-        );
+        Debug.Log("Hit " + enemy.name);
 
-        foreach (Collider2D enemy in hits)
+        EnemyHealth eh = enemy.GetComponent<EnemyHealth>();
+        if (eh != null)
         {
-            Debug.Log("Hit " + enemy.name);
-
-           
-
-            
+            eh.TakeDamage(punchdamage);
         }
     }
+}
 
     void OnDrawGizmosSelected()
     {
@@ -151,9 +155,13 @@ public class Playermovement : MonoBehaviour
         }
 
         if (collision.gameObject.CompareTag("Enemy") && !isDead)
-        {
-            Die();
-        }
+{
+        PlayerHealth ph = GetComponent<PlayerHealth>();
+    if (ph != null)
+    {
+        ph.TakeDamage(1);
+    }
+}
     }
 
     void OnCollisionExit2D(Collision2D collision)
@@ -171,6 +179,11 @@ public class Playermovement : MonoBehaviour
             r.linearVelocity = new Vector2(r.linearVelocity.x, bounceforce);
             jumpcount = 1;
             hasdashedinair = false;
+        }
+        if (other.CompareTag("Spikes"))
+        {
+            
+            Die();
         }
     }
 
